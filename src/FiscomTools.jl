@@ -1,4 +1,6 @@
 module FiscomTools
 include("test.jl")
-export js
+include("incremental.jl")
+include("bisection.jl")
+export bisection,incremental
 end

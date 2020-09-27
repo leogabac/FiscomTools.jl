@@ -17,7 +17,7 @@ end
 
 #If then a Float is passed to the function, then it means it must mean an objective relative error.
 function bisection(f,lower,upper, error::Float64)
-    mid = 0;
+    mid = (lower + upper)/2;
     ea = 1; #Initialize
 #We do the first iteration, otherwise, there is no way to have a relative error to measure
     if f(lower)*f(mid) < 0

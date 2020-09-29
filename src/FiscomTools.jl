@@ -2,5 +2,7 @@ module FiscomTools
 include("test.jl")
 include("incremental.jl")
 include("bisection.jl")
-export bisection,incremental
+include("diff.jl")
+include("newton.jl")
+export bisection,incremental,diff,newtonR
 end

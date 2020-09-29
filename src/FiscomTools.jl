@@ -4,5 +4,5 @@ include("incremental.jl")
 include("bisection.jl")
 include("numdiff.jl")
 include("newton.jl")
-export bisection,incremental,diff,newtonR
+export bisection,incremental,numdiff,newtonR
 end

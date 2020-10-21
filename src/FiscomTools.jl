@@ -4,5 +4,12 @@ include("incremental.jl")
 include("bisection.jl")
 include("numdiff.jl")
 include("newton.jl")
-export bisection,incremental,numdiff,newtonR
+include("gauss.jl")
+include("intsimp.jl")
+include("lucrout.jl")
+
+export incremental, bisection, newtonR # For root approximation
+export numdiff # Numerical differentiation
+export redGauss, lgsolve, lucrout # Matrices and systems of equations
+export intsimp # Integration techniques
 end

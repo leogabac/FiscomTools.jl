@@ -7,9 +7,10 @@ include("newton.jl")
 include("gauss.jl")
 include("intsimp.jl")
 include("lucrout.jl")
+include("trapz.jl")
 
 export incremental, bisection, newtonR # For root approximation
 export numdiff # Numerical differentiation
 export redGauss, lgsolve, lucrout # Matrices and systems of equations
-export intsimp # Integration techniques
+export trapz,intsimp # Integration techniques
 end

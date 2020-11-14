@@ -29,7 +29,7 @@ function lgsolve(A)
     A = convert(Array{Float64,2},A)
     numRow, numCol = size(A); # Then retrieve some important variable names
     #x=zeros(numRow,1); 
-    x = Array{Flaot64}(undef,numRow)
+    x = Array{Float64}(undef,numRow)
     #
     for k in 1:numCol-1
         # Is the pivot zero?

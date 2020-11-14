@@ -28,7 +28,8 @@ function lgsolve(A)
     # First, we make sure to convert all to a Float64 array
     A = convert(Array{Float64,2},A)
     numRow, numCol = size(A); # Then retrieve some important variable names
-    x=zeros(numRow,1); 
+    #x=zeros(numRow,1); 
+    x = Array{Flaot64}(undef,numRow)
     #
     for k in 1:numCol-1
         # Is the pivot zero?
@@ -71,17 +72,17 @@ function redGauss2(A)
         ab = abs.(A[:,k])
         pivotIndex = findall(x->x == maximum(ab),ab) #Looking for the index of the pivot
 
-    # Taking the first maximum, just in case it repeats
-    if length(pivotIndex) > 1
-        pivotInd = pivotIndex(1);
-    else #No type warn
-        pivotInd = pivotIndex;
-    end
+        # Taking the first maximum, just in case it repeats
+        if length(pivotIndex) > 1
+            pivotInd = pivotIndex[1];
+        else #No type warn
+            pivotInd = pivotIndex;
+        end
 
-    pivot = A[pivotInd,k];
+        pivot = A[pivotInd,k];
 
-    # Rearranging the rows
-    A[k,:], A[pivotInd,:] = A[pivotInd,:],A[k,:]
+        # Rearranging the rows
+        A[k,:], A[pivotInd,:] = A[pivotInd,:],A[k,:]
 
         A[k,:] = A[k,:]./pivot #We scale the whole current row
         for j in (k+1):numRow # Last, we go from the current+1 row, up until the bottom
@@ -103,17 +104,17 @@ function lgsolve2(A)
         ab = abs.(A[:,k])
         pivotIndex = findall(x->x == maximum(ab),ab) #Looking for the index of the pivot
 
-    # Taking the first maximum, just in case it repeats
-    if length(pivotIndex) > 1
-        pivotInd = pivotIndex(1);
-    else #No type warn
-        pivotInd = pivotIndex;
-    end
+        # Taking the first maximum, just in case it repeats
+        if length(pivotIndex) > 1
+            pivotInd = pivotIndex[1];
+        else #No type warn
+            pivotInd = pivotIndex;
+        end
 
-    pivot = A[pivotInd,k];
+        pivot = A[pivotInd,k];
 
-    # Rearranging the rows
-    A[k,:], A[pivotInd,:] = A[pivotInd,:],A[k,:]
+        # Rearranging the rows
+        A[k,:], A[pivotInd,:] = A[pivotInd,:],A[k,:]
 
         A[k,:] = A[k,:]./pivot #We scale the whole current row
         for j in (k+1):numRow # Last, we go from the current+1 row, up until the bottom

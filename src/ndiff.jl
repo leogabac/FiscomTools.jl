@@ -1,24 +1,26 @@
 # Richardson function
-function numdiff(f,x::Number,h::Float64)
+function ndiff(f,x::Number,h::Float64)
     D0 = (f(x+h)-f(x-h))/(2*h);
     D1 = ( f(x+(h/2)) - f(x-(h/2)) )/(h);
     TV = D1 + (D1-D0)/3
     return TV
 end
 
+#= 
 # Richardson function
-function numdiff(f,x::Number,h::Int64)
+function ndiff(f,x::Number,h::Int64)
     D0 = (f(x+h)-f(x-h))/(2*h);
     D1 = ( f(x+(h/2)) - f(x-(h/2)) )/(h);
     TV = D1 + (D1-D0)/3
     return TV
 end
+=#
 
 # Richardson discrete of type 1 (We get an exact value in x vector in which we want to differentiate)
-function numdiff(x::Array{Float64,1}, y::Array{Float64,1}, val) #We get a x array, a y array and a val in x for which we want to get its derivative
+function ndiff(x::Array{Float64,1}, y::Array{Float64,1}, val) #We get a x array, a y array and a val in x for which we want to get its derivative
     h = abs(x[2] - x[1]);
     ind = findall(p->p==val, x)[1]
-    D0 = (y[ind+2]-y[ind-2])/(4*h);
+    D0 = (y[ind+2]-y[ind-2])/(4*h); # The step in this case is double of the spacing
     D1 = (y[ind+1]-y[ind-1])/(2*h);
     TV = D1 + (D1-D0)/3
     return TV
@@ -27,7 +29,7 @@ end
 # Richardson getting the whole bunch i.e. CDD of O(h^4) residues
 
 #=
-function numdiff(x::Array{Float64,1}, y::Array{Float64,1}) #We get a x array, a y array and a val in x for which we want to get its derivative
+function ndiff(x::Array{Float64,1}, y::Array{Float64,1}) #We get a x array, a y array and a val in x for which we want to get its derivative
     h = abs(x[2] - x[1]);
     
     return TV
@@ -75,5 +77,3 @@ function bdiff(x::Array{Float64,1}, y::Array{Float64,1})
     d = (y[2:end] - y[1:end-1])/h
     return d
 end
-
-

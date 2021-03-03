@@ -1,6 +1,6 @@
-function redGauss(A)
+function redGauss(A::Array{Float64,2})
     # First, we make sure to convert all to a Float64 array
-    A = convert(Array{Float64,2},A)
+    # A = convert(Array{Float64,2},A)
     numRow, numCol = size(A); # Then retrieve some important variable names
     #
     for k in 1:numCol-1
@@ -24,9 +24,9 @@ function redGauss(A)
     return A
 end
 
-function lgsolve(A)
+function lgsolve(A::Array{Float64,2})
     # First, we make sure to convert all to a Float64 array
-    A = convert(Array{Float64,2},A)
+    #A = convert(Array{Float64,2},A)
     numRow, numCol = size(A); # Then retrieve some important variable names
     #x=zeros(numRow,1); 
     x = Array{Float64}(undef,numRow)
@@ -57,14 +57,14 @@ function lgsolve(A)
         for m = 1:length(x)
             S += A[k,m]*x[m];
         end
-        x[k] = A[k,end] - S;
+        x[k] = A[k,end] - S; # isolate
     end
     return x
 end
 
-function redGauss2(A)
+function redGauss2(A::Array{Float64,2})
     # First, we make sure to convert all to a Float64 array
-    A = convert(Array{Float64,2},A)
+    # A = convert(Array{Float64,2},A)
     numRow, numCol = size(A); # Then retrieve some important variable names
     #
     for k in 1:numCol-1
@@ -93,9 +93,9 @@ function redGauss2(A)
 end
 
 
-function lgsolve2(A)
+function lgsolve2(A::Array{Float64,2})
     # First, we make sure to convert all to a Float64 array
-    A = convert(Array{Float64,2},A);
+    # A = convert(Array{Float64,2},A);
     numRow, numCol = size(A); # Then retrieve some important variable names
     x=zeros(numRow,1); 
     #

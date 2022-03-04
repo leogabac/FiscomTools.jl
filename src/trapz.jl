@@ -1,4 +1,3 @@
-# Integration using a function
 
 """
     trapz(f,a,b; h)

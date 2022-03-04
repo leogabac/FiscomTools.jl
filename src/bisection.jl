@@ -1,5 +1,35 @@
 
 
+# Auxiliary sub-routine
+endpoint_prod(f,interval::Tuple) = f(interval[1])*f(interval[end])
+
+"""
+    incremental(f,min,max; N)
+
+Computes all intervals containing roots between `min` and `max`. The return type is a vector of tuples.
+
+The keyword (optional) argument defines the number of points in the discretization. The default value is `N = 5`.
+
+This function works best along with the `bisection` function
+
+
+# Examples
+```julia-repl
+julia> f(x) = x^2 - 5;
+julia> incremental(f, -10,10)
+2-element Vector{Tuple{Float64, Float64}}:
+(-5.0, 0.0)
+(0.0, 5.0)
+
+```
+"""
+function incremental(f,min::Real,max::Real;N::Int64 = 5 )
+    t = range(min,stop = max,length = N) # makes the domain
+    intervals = [(t[i], t[i+1]) for i in 1:length(t)-1]
+    possible = [ interval for interval in intervals if endpoint_prod(f,interval) < 0 ]
+    return possible
+end
+
 """
     bisection(f,a,b;TOL)
 

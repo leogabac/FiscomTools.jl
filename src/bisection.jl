@@ -47,6 +47,3 @@ function bisection(f, lower::Real ,upper::Real; TOL::Float64=0.01)
 
     return mid
 end
-
-f(x) = x^2 - 1;
-@code_warntype bisection(f,0,3, TOL = 1.0e-5)

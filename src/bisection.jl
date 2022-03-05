@@ -18,7 +18,7 @@ function bisection_it(f,ansatz::Tuple{Float64,Float64}; N::Int64=100)
     return mid
 end
 
-# f(x) = sin(x)
+# f(x) = sin(x) test de david
 # bisection(f,(2.,4.))
 
 

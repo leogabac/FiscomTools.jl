@@ -9,7 +9,7 @@ include("lucrout.jl")
 include("trapz.jl")
 include("diff_operators.jl")
 
-export incremental, bisection, newtonR # For root approximation
+export incremental, bisection, newtonroot # For root approximation
 export dv, pdv, gradient # Numerical differentiation
 export redGauss, lgsolve, lucrout # Matrices and systems of equations
 export trapz,intsimp # Integration techniques

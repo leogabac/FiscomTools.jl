@@ -14,7 +14,7 @@ julia> dv(f,2.5)
 
 ```
 """
-function dv(f,x::Real;h::Float64 = 0.01)
+function dv(f,x::Real; h::Float64 = 0.01)
     D0 = (f(x+h)-f(x-h))/(2*h);
     D1 = ( f(x+(h/2)) - f(x-(h/2)) )/(h);
     TV = D1 + (D1-D0)/3

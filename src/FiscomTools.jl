@@ -1,7 +1,7 @@
 module FiscomTools
 include("test.jl")
 include("bisection.jl")
-include("ndiff.jl")
+include("numdiff.jl")
 include("newton.jl")
 include("gauss.jl")
 include("intsimp.jl")
@@ -10,7 +10,7 @@ include("trapz.jl")
 include("diff_operators.jl")
 
 export incremental, bisection, newtonR # For root approximation
-export ndiff # Numerical differentiation
+export dv, pdv, gradient # Numerical differentiation
 export redGauss, lgsolve, lucrout # Matrices and systems of equations
 export trapz,intsimp # Integration techniques
 export d1hat, d2hat # Differential operators of the first and second numerical derivative

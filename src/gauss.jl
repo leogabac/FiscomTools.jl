@@ -1,5 +1,5 @@
 
-
+# Auxiliary functions
 function swap_rows(A,i,j)
     A[i,:], A[j,:] = A[j,:],A[i,:] 
     return A
@@ -7,7 +7,28 @@ end
 
 eye(n) = [ i==j ? 1.0 : 0.0 for i in 1:n, j in 1:n]
 
-function redGauss(A::Matrix{Float64})
+
+"""
+    ref(A)
+
+Computes the row echalon form of a square matrix ´A´. This is a subroutine of lgsolve(A).
+
+For computation purposes, the matrix should be of type Matrix{Float64}.
+
+# Examples
+```julia-repl
+julia> A = [1 3 3.0 4 5; 2 2 1 2 1; 3 2 3 3 7; 1 2 3 4 5; 7 8 9 4 5]
+julia> ref(A)
+5×5 Matrix{Float64}:
+1.0  3.0  3.0   4.0         5.0
+0.0  1.0  1.25  1.5         2.25
+0.0  0.0  1.0   0.545455    2.81818
+0.0  0.0  0.0   1.0        -1.55556
+0.0  0.0  0.0   0.0       -23.3333
+
+```
+"""
+function ref(A::Matrix{Float64})
     
     numRow, numCol = size(A); 
     
@@ -31,11 +52,28 @@ function redGauss(A::Matrix{Float64})
     return A
 end
 
-function lgsolve(A::Matrix{Float64})
-    numRow, numCol = size(A); # Then retrieve some important variable names
 
+"""
+    lgsolve(A,b)
+
+Computes the solution ´x´ of the matrix equation Ax = b.
+
+# Examples
+```julia-repl
+julia> A = [1 3 3.0 4 5; 2 2 1 2 1; 3 2 3 3 7; 1 2 3 4 5; 7 8 9 4 5]
+julia> b = [1,2,3,4,5.0];
+julia> x = lgsolve(A,b)
+julia> # From the LinearAlgebra package
+julia> norm(A*x - b)
+4.5288390936029406e-15
+
+```
+"""
+function lgsolve(A::Matrix{Float64}, b::Vector{Float64})
+    A = hcat(A,b);
+    numRow, numCol = size(A); # Then retrieve some important variable names
     x = Vector{Float64}(undef,numRow)
-    A = redGauss(A)
+    A = ref(A)
     
 # Backwards solution
     x[end] = A[end,end];
@@ -48,13 +86,3 @@ function lgsolve(A::Matrix{Float64})
     end
     return x
 end
-
-
-# ===== TESTING ===== #
-A = [1 3 3.0 4 5; 2 2 1 2 1; 3 2 3 3 7; 1 2 3 4 5; 7 8 9 4 5]
-b = [1,2,3,4,5.0]
-A\b
-
-x = lgsolve(hcat(A,b))
-
-A*x-b

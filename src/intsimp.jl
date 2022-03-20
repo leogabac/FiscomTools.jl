@@ -1,6 +1,6 @@
 
 
-function simp13(f,a,b,h)
+function simp13(f,a::Real,b::Real,h::Real)
     Δ = (b-a)
     N = floor(Δ/h)
     odd = sum( f(x) for x in a+h:2h:b-h ) 
@@ -9,12 +9,12 @@ function simp13(f,a,b,h)
     return I
 end
 
-function simp38(f,a,b,h)
+function simp38(f,a::Real,b::Real,h::Real)
     Δ = (b-a)
     return (Δ/8)*( f(a) + 3*f(a+h) + 3*f(a+2h) + f(b) )
 end
 
-function intsimp(f,a,b,h)
+function intsimp(f,a::Real,b::Real,h::Real)
     N = floor((b-a)/h)
     if N % 2 == 0 #i.e. we have an even number of intervals
         return simp13(f,a,b,h)
@@ -101,5 +101,5 @@ h = 0.15
 t = a:h:b
 length(t)
 
-intsimp(x -> x^2 - 3,0,1,0.1)
-intsimpold(x -> x^2 - 3,0,1,0.1)
+@time intsimp(cos,0,1,0.000001)
+@time intsimpold(cos,0,1,0.000001)

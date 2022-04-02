@@ -1,39 +1,27 @@
 include("ndiff.jl")
 
-# Simple Newton-Rhapson method that takes into account number of iterations
-function newtonR(f,x::Number,step::Float64,n::Int64)::Float64
-    for _ in 1:n
-        x= x - f(x)/ndiff(f,x,step)
-    end
-    return x
-end
+"""
+    newtonroot(f,x; step,TOL)
 
-function newtonR(f,x::Number,step::Int64,n::Int64)::Float64
-    for _ in 1:n
-        x= x - f(x)/ndiff(f,x,step)
-    end
-    return x
-end
+Computes the approximate root of `f(x)` with initial guess `x` using Newton's method.
 
-#Newton-Rhapson functions that take into account the error, i.e. whenever the fourth input is a Float64 type
-function newtonR(f,x::Number,step::Float64,error::Float64)::Float64
-    ea = 1; #initialize
-    x = x= x - f(x)/ndiff(f,x,step) #first iteration, since it is a requirement to calculate the error
-    while ea > error
+The keyword (optional) arguments `step` defines the spacing for differentiation, and `TOL` the stopping criteria.
+
+# Examples
+```julia-repl
+julia> f(x) = x^2 - 1;
+julia> newtonroot(f,2)
+1.0000000464611474
+
+```
+"""
+function newtonroot(f,x::Real; step::Float64 = 0.01,TOL::Float64 = 0.01)
+    ϵ = 1; #initialize
+    x -=  f(x)/dv(f,x,h = step) #first iteration, since it is a requirement to calculate the error
+    while ϵ > TOL
         last = x
-        x = x - f(x)/ndiff(f,x,step)
-        ea = abs((x-last)/x)
-    end
-    return x
-end
-
-function newtonR(f,x::Number,step::Int64,error::Float64)::Float64
-    ea = 1; #initialize
-    x = x= x - f(x)/ndiff(f,x,step) #first iteration, since it is a requirement to calculate the error
-    while ea > error
-        last = x
-        x = x - f(x)/ndiff(f,x,step)
-        ea = abs((x-last)/x)
+        x -= f(x)/dv(f,x,h = step)
+        ϵ = abs((x-last)/x)
     end
     return x
 end

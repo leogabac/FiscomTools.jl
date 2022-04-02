@@ -1,32 +1,56 @@
-# If an integer is passed down to the function, it means that the user is requesting an exact number of iterations.
-function bisection_it(f,ansatz::Tuple{Float64,Float64}; N::Int64=100)
-    (lower,upper) = ansatz
-    mid = 0
-    for _ in 1:N
-        
-    mid = (lower + upper)/2
-        
-        if f(lower)*f(mid) < 0
-            upper = mid
-        elseif f(lower)*f(mid) > 0
-            lower = mid
-        else
-            return mid
-        end
-        
-    end
-    return mid
+
+
+# Auxiliary sub-routine
+endpoint_prod(f,interval::Tuple) = f(interval[1])*f(interval[end])
+
+"""
+    incremental(f,min,max; N)
+
+Computes all intervals containing roots between `min` and `max`. The return type is a vector of tuples.
+
+The keyword (optional) argument defines the number of points in the discretization. The default value is `N = 5`.
+
+This function works best along with the `bisection` function
+
+
+# Examples
+```julia-repl
+julia> f(x) = x^2 - 5;
+julia> incremental(f, -10,10)
+2-element Vector{Tuple{Float64, Float64}}:
+(-5.0, 0.0)
+(0.0, 5.0)
+
+```
+"""
+function incremental(f,min::Real,max::Real;N::Int64 = 5 )
+    t = range(min,stop = max,length = N) # makes the domain
+    intervals = [(t[i], t[i+1]) for i in 1:length(t)-1]
+    possible = [ interval for interval in intervals if endpoint_prod(f,interval) < 0 ]
+    return possible
 end
 
-# f(x) = sin(x)
-# bisection(f,(2.,4.))
+"""
+    bisection(f,a,b;TOL)
 
+Approximates the root of `f(x)` in the interval between `a` and `b` using the bisection method.
 
-#If then a Float is passed to the function, then it means it must mean an objective relative error.
-function bisection_err(f,ansatz::Tuple{Float64,Float64}; error::Float64=0.01)
+The keyword (optional) argument `TOL` refers to the stop criteria. The default value is `TOL = 0.01`
+
+# Examples
+```julia-repl
+julia> f(x) = x^2 - 1 ;
+julia> bisection(f,0,3, TOL = 1e-5 )
+1.0000019073486328
+
+```
+
+"""
+function bisection(f, lower::Real ,upper::Real; TOL::Float64=0.01)
     mid = (lower + upper)/2;
-    ea = 1; #Initialize
-    #We do the first iteration, otherwise, there is no way to have a relative error to measure
+    ε = 1; #Initialize
+    
+    # We do the first iteration
     if f(lower)*f(mid) < 0
         upper = mid
     elseif f(lower)*f(mid) > 0
@@ -34,11 +58,12 @@ function bisection_err(f,ansatz::Tuple{Float64,Float64}; error::Float64=0.01)
     else
         return mid
     end
+
     #Now we start doing the iterations until it is done
-    while ea > error
+    while ε > TOL
         last = mid #We store the last approximation
         mid = (lower + upper)/2
-        ea = abs((mid-last)/mid);
+        ε = abs((mid-last)/mid);
         
         if f(lower)*f(mid) < 0
             upper = mid
@@ -49,5 +74,6 @@ function bisection_err(f,ansatz::Tuple{Float64,Float64}; error::Float64=0.01)
         end
         
     end
+
     return mid
 end

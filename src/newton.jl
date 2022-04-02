@@ -1,4 +1,4 @@
-include("ndiff.jl")
+include("numdiff.jl")
 
 """
     newtonroot(f,x; step,TOL)

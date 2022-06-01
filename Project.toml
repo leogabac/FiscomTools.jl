@@ -1,7 +1,7 @@
 name = "FiscomTools"
 uuid = "a6c10525-9db2-452e-ae7c-ad75eebdb40f"
 authors = ["leogabac <leogabac@gmail.com> and contributors"]
-version = "0.1.0"
+version = "0.2.0"
 
 [compat]
 julia = "1"

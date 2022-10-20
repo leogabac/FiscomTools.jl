@@ -71,36 +71,23 @@ function intsimp(x::Array{Float64,1},y::Array{Float64,1})
     end
 end
 
-#=
-function intsimpold(f,a,b,h)
-    t = collect(Float64,a:h:b)
 
-    if mod(length(t)-1,2) == 0 #i.e. we have an even number of intervals
-        oddsum, evensum = 0,0 #initialize
-        for  j in 2:2:(length(t) -1)
-            oddsum += f(t[j])
-        end
-        for j in 3:2:(length(t) -1)
-            evensum += f(t[j])
-        end
-        I = (b-a)* ( f(t[1]) + 4*oddsum + 2*evensum + f(t[end]) )/(3*(length(t)-1))
-        return I
-    else #i.e. we have an odd number of intervals
-        # First we need to calculate the simpson 1/3 up until... end-3
-        # since we have N-3 points for simpson 1/3 and N-4 intervals
-        oddsum, evensum = 0,0 #initialize
-        for  j in 2:2:(length(t) - 4)
-            oddsum += f(t[j])
-        end
-        for j in 3:2:(length(t) - 4)
-            evensum += f(t[j])
-        end
-        I1 = (t[end-3]-a)* ( f(t[1]) + 4*oddsum + 2*evensum + f(t[end-3]) )/(3*(length(t)-4)) 
+"""
+    intsimp2(x,y,f)
 
-        I2 = (b-t[end-3])/8*( f(t[end-3]) + 3*f(t[end-2]) + 3*f(t[end-1]) + f(t[end]) )
+Computes the 2D integral of `f(x,y)` in the rectangle delimited by `x` and `y` using `intsimp()`. The arguments must be given as a mesh.
 
-        return I1 + I2
-
-    end
-end 
-=#
+# Examples
+```julia-repl
+julia> f(x,y) = sin(x)*cos(y) ;
+julia> x = collect(-2:0.01:1) ;
+julia> y = collect(-1:0.001:1)  ;
+julia> feval = [f(xi,yi) for yi in y, xi in x] ;
+julia> intsimp2(feval,x,y)
+-1.609648403663146
+```
+"""
+function intsimp2(f::Matrix,x::Vector,y::Vector)
+    evaly = [intsimp(y,collect(col)) for col in eachcol(f)]
+    return intsimp(x, evaly)
+end

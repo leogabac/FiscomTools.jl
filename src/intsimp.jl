@@ -39,29 +39,22 @@ end
 
 
 # Integration whenever a pair of vectors is given as a function, x and y
-function intsimp(x::Array{Float64,1},y::Array{Float64,1})
+function intsimp(x::AbstractVector,y::AbstractVector)
     h = abs( x[2] - x[1] )
 
     if mod(length(x)-1,2) == 0 #i.e. we have an even number of intervals
-        oddsum, evensum = 0,0 #initialize
-        for  j in 2:2:(length(x) -1)
-            oddsum += y[j]
-        end
-        for j in 3:2:(length(x) -1)
-            evensum += y[j]
-        end
+
+        oddsum = sum( y[j] for j in 2:2:(length(x) -1) )
+        evensum = sum( y[j] for j in 3:2:(length(x) -1) )
         I = (x[end]-x[1])* ( y[1] + 4*oddsum + 2*evensum + y[end] )/(3*(length(x)-1))
         return I
     else #i.e. we have an odd number of intervals
         # First we need to calculate the simpson 1/3 up until... end-3
         # since we have N-3 points for simpson 1/3 and N-4 intervals
-        oddsum, evensum = 0,0 #initialize
-        for  j in 2:2:(length(x) - 4)
-            oddsum += y[j]
-        end
-        for j in 3:2:(length(x) - 4)
-            evensum += y[j]
-        end
+
+        oddsum = sum( y[j] for j in 2:2:(length(x) -4) )
+        evensum = sum( y[j] for j in 3:2:(length(x) -4) )
+
         I1 = (x[end-3]-x[1])* ( y[1] + 4*oddsum + 2*evensum + y[end-3] )/(3*(length(x)-4)) 
 
         I2 = (x[end]-x[end-3])/8*( y[end-3] + 3*y[end-2] + 3*y[end-1] + y[end] )
@@ -73,7 +66,7 @@ end
 
 
 """
-    intsimp2(x,y,f)
+    intsimp2(f,x,y)
 
 Computes the 2D integral of `f(x,y)` in the rectangle delimited by `x` and `y` using `intsimp()`. The arguments must be given as a mesh.
 
@@ -87,7 +80,28 @@ julia> intsimp2(feval,x,y)
 -1.609648403663146
 ```
 """
-function intsimp2(f::Matrix,x::Vector,y::Vector)
+function intsimp2(f::AbstractMatrix,x::AbstractVector,y::AbstractVector)
     evaly = [intsimp(y,collect(col)) for col in eachcol(f)]
     return intsimp(x, evaly)
+end
+
+"""
+    intsimp3(f,x,y,z)
+
+Computes the 3D integral of `f(x,y,z)` in the rectangle delimited by `x`, `y`, and `z` using `intsimp2()`. The arguments must be given as a mesh.
+
+# Examples
+```julia-repl
+julia> f(x,y) = f(x,y,z) = x*y*sin(z);
+julia> x = range(0,π,length=50);
+julia> y = range(0,π,length=50);
+julia> z = range(0,π,length=50);
+julia> feval = [f(xi,yi,zi) for zi in z_mesh, yi in y_mesh, xi in x_mesh]; ;
+julia> intsimp3(feval,x,y,z)
+48.7045501440698
+```
+"""
+function intsimp3(f::AbstractArray,x::AbstractVector,y::AbstractVector,z::AbstractVector)
+    zeval = [intsimp2(f[j,:,:],x,y) for j in eachindex(z)]
+    return intsimp(z,zeval)
 end

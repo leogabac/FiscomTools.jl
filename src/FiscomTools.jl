@@ -20,7 +20,7 @@ module FiscomTools
     export incremental, bisection, newtonroot # For root approximation
     export dv, pdv, gradient # Numerical differentiation
     export ref, lgsolve # Matrices and systems of equations
-    export trapz,intsimp # Integration techniques
+    export trapz,intsimp,intsimp2,intsimp3 # Integration techniques
     export Lhat, D1hat, D2hat # Differential operators of the first and second numerical derivative
     export linreg, predict, correlation, slope, intercept
 

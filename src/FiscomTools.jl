@@ -16,6 +16,7 @@ module FiscomTools
     include("trapz.jl")
     include("diff_operators.jl")
     include("linear_regression.jl")
+    include("poly.jl")
 
     export incremental, bisection, newtonroot # For root approximation
     export dv, pdv, gradient # Numerical differentiation
@@ -23,5 +24,6 @@ module FiscomTools
     export trapz,intsimp,intsimp2,intsimp3 # Integration techniques
     export Lhat, D1hat, D2hat # Differential operators of the first and second numerical derivative
     export linreg, predict, correlation, slope, intercept
+    export HermitePoly, LaguerrePoly
 
 end
